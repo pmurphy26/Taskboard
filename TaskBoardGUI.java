@@ -2,10 +2,11 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 public class TaskBoardGUI {
-    private TaskGroup taskGroup1;
-    private TaskGroup taskGroup2;
+    private TaskGroup allTasks;
+    private JPanel taskPanel;
     private ControlPanel controlPanel;
     private TaskViewer taskViewer;
     private TaskBoard taskboard = new TaskBoard("Testing board");
@@ -15,23 +16,21 @@ public class TaskBoardGUI {
      */
     public TaskBoardGUI() {
         // Create TaskGroups
-        taskGroup1 = new TaskGroup("Group 1", this);
-        taskGroup2 = new TaskGroup("Group 2", this);
+        allTasks = new TaskGroup("All tasks", this);
 
         // Create TaskViewer
-        taskViewer = new TaskViewer();
+        taskViewer = new TaskViewer(this);
 
         //create control panel
-       controlPanel = new ControlPanel(this);
+        controlPanel = new ControlPanel(this);
 
         // Create JFrame
         JFrame frame = new JFrame("Task Viewer and Groups Example");
         frame.setLayout(new BorderLayout());
 
         // Create panel for TaskGroups and TaskViewer
-        JPanel taskPanel = new JPanel(new GridLayout(1, 3));
-        taskPanel.add(taskGroup1);
-        taskPanel.add(taskGroup2);
+        taskPanel = new JPanel(new GridLayout(1, 4));
+        taskPanel.add(allTasks);
         taskPanel.add(taskViewer);
 
         // Add components to JFrame
@@ -61,11 +60,17 @@ public class TaskBoardGUI {
     public void addNewTask(Task newTask) {
         taskboard.addNewTask(newTask);
 
-        if (taskGroup1.sameTeam(newTask.getAssignedMembers())) {
-            taskGroup1.addTask(newTask);
-        } else if (taskGroup2.sameTeam(newTask.getAssignedMembers())) {
-            taskGroup2.addTask(newTask);
+        for (int i = 1; i < taskPanel.getComponents().length; i++) {
+            if (taskPanel.getComponents()[i] instanceof TaskGroup) {
+                TaskGroup group = (TaskGroup) taskPanel.getComponents()[i];
+
+                if (group.sameTeam(newTask.getAssignedMembers())) {
+                    group.addTask(newTask);
+                }
+            }
         }
+
+        allTasks.addTask(newTask);
     }
 
     /**
@@ -76,5 +81,53 @@ public class TaskBoardGUI {
      */
     public boolean addNewUser(User newUser) {
         return taskboard.addNewMember(newUser);
+    }
+
+    /**
+     * creates and adds a new task group with given members
+     *
+     * @param members
+     * @return
+     */
+    public boolean addNewTaskGroup(Set<User> members) {
+        TaskGroup newTaskGroup = new TaskGroup(members, this);
+        Component[] components = taskPanel.getComponents();
+
+        for (Task t : taskboard.getTasksForGroup(members)) {
+            System.out.println("Task is " + t);
+            newTaskGroup.addTask(t);
+        }
+
+        //add in new task group
+        taskPanel.remove(components.length - 1);
+        taskPanel.add(newTaskGroup); //add new taskgroup
+        taskPanel.add(taskViewer);
+
+        // Revalidate and repaint the frame
+        taskPanel.revalidate();
+        taskPanel.repaint();
+        return false;
+    }
+
+    /**
+     * updates the task groups in the GUI when a task's assigned members are changed
+     *
+     * @param changedTask
+     */
+    public void tasksGroupChanged(Task changedTask) {
+        for (int i = 1; i < taskPanel.getComponents().length; i++) {
+            if (taskPanel.getComponents()[i] instanceof TaskGroup) {
+                TaskGroup group = (TaskGroup) taskPanel.getComponents()[i];
+                //if changed task was in this group and shouldn't be anymore
+                if (group.contains(changedTask)) {
+                    group.removeTask(changedTask); //this does not work yet because remove task hasn't been implemented
+                }
+
+                //if changed task should be in this group
+                if (group.sameTeam(changedTask.getAssignedMembers())) {
+                    group.addTask(changedTask);
+                }
+            }
+        }
     }
 }

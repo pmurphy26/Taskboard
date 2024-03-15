@@ -41,7 +41,6 @@ public class User {
      * @return
      */
     public boolean equals(Object o) {
-        System.out.println("using equals");
         if (o != null && o.getClass() == this.getClass()) {
             User otherUser = (User) o;
 

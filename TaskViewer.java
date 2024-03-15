@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.String;
 
 public class TaskViewer extends JPanel {
@@ -8,6 +10,7 @@ public class TaskViewer extends JPanel {
     private JLabel titleLabel;
     private Border titleBorder;
     private JPanel attributesPanel;
+    private TaskBoardGUI taskboard;
 
     /**
      * Creates a new taskviewer object
@@ -21,7 +24,8 @@ public class TaskViewer extends JPanel {
     /**
      * Creates a new empty taskviewer object
      */
-    public TaskViewer() {
+    public TaskViewer(TaskBoardGUI taskboard) {
+        this.taskboard = taskboard;
         setLayout(new BorderLayout());
 
         // Title panel with thicker black line border
@@ -32,15 +36,22 @@ public class TaskViewer extends JPanel {
         titleLabel.setBorder(titleBorder);
         add(titleLabel, BorderLayout.NORTH);
 
-        attributesPanel = new JPanel(new GridLayout(4, 1));
+        attributesPanel = new JPanel(new BorderLayout());
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         attributesPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
         // Add attributes with vertical line border between attribute label and value
+        /*
         addAttribute(attributesPanel, "Due Date", "Task not selected yet");
         addAttribute(attributesPanel, "Assigned Members", "Task not selected yet");
         addAttribute(attributesPanel, "Task Status", "Task not selected yet");
         addAttribute(attributesPanel, "Additional Notes", "Task not selected Yet");
+        */
+
+        addAttributes(attributesPanel, new String[] {"Due<br>date", "Assigned<br>Members",
+                "Task<br>Status", "Additional<br>Notes"},
+                new String[] {"Task not selected yet", "Task not selected yet",
+                        "Task not selected yet", "Task not selected yet"});
 
         add(attributesPanel, BorderLayout.CENTER);
     }
@@ -55,18 +66,68 @@ public class TaskViewer extends JPanel {
     private void addAttribute(JPanel panel, String attributeName, String attributeValue) {
         JPanel attributePanel = new JPanel(new BorderLayout());
 
+        //create edit button
+        JButton editButton = new JButton("EDIT " + attributeName.toUpperCase());
+        attributePanel.add(editButton, BorderLayout.EAST);
+
+        //attribute label
         JLabel nameLabel = new JLabel(attributeName);
-        nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5)); // Add padding
+        nameLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
         attributePanel.add(nameLabel, BorderLayout.WEST);
 
-        JLabel valueLabel = new JLabel(attributeValue);
-        valueLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5)); // Add padding
+        //attribute value
+        JTextField valueLabel = new JTextField(attributeValue);
+        valueLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
         attributePanel.add(valueLabel, BorderLayout.CENTER);
 
         panel.add(attributePanel);
 
         // Add vertical line border between attribute label and value
         attributePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)); // Vertical line border
+    }
+
+    /**
+     * adds the list of attributes
+     *
+     * @param viewerPanel
+     * @param attributeNames
+     * @param attributeValues
+     */
+    private void addAttributes(JPanel viewerPanel, String[] attributeNames, String[] attributeValues) {
+        JPanel panel = new JPanel(new GridLayout(4, 3));
+
+        // Add components to the panel
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 3; col++) {
+                if (col == 0) {
+                    //attribute label
+                    JLabel nameLabel = new JLabel("<html>" + attributeNames[row] + "</html>");
+                    nameLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
+                    nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                    panel.add(nameLabel);
+                } else if (col == 1) {
+                    //attribute value
+                    JTextField valueLabel = new JTextField(attributeValues[row]);
+                    valueLabel.setBackground(panel.getComponents()[0].getBackground());
+
+                    valueLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
+                    panel.add(valueLabel);
+                } else {
+                    //create edit button
+                    JButton editButton = new JButton("edit " + row);
+                    int finalRow = row;
+                    editButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            editTask(finalRow);
+                        }
+                    });
+                    panel.add(editButton);
+                }
+            }
+        }
+
+        viewerPanel.add(panel);
     }
 
     /**
@@ -118,26 +179,47 @@ public class TaskViewer extends JPanel {
         //new text for attributes
         String[] textComponents = new String[] {
                 task.getDueDate()[0] + "-" + task.getDueDate()[1] + "-" + task.getDueDate()[2],
-                "not yet implemented", //task.getAssignedMembers().toString(),
+                task.getAssignedMembersString(),
                 task.getStatusString(),
                 task.getNote()
         };
 
-
         Component[] components = attributesPanel.getComponents();
-        if (components.length == 4) {
-            //loop through each attribute
-            for (int i = 0; i < components.length; i++) {
-                //if attribute is stored in jpanel
-                if (components[i] instanceof JPanel) {
-                    Component[] labels = ((JPanel) components[i]).getComponents();
-
-                    //get the value label
-                    if (labels.length == 2 && labels[1] instanceof JLabel) {
-                        ((JLabel) labels[1]).setText(textComponents[i]);
-                    }
-                }
+        if (components.length == 1) {
+            JPanel comp = (JPanel) attributesPanel.getComponents()[0];
+            for (int i = 1; i < comp.getComponents().length; i+=3) {
+                JLabel panel = (JLabel) comp.getComponents()[i - 1];
+                JTextField textField = (JTextField) comp.getComponents()[i];
+                textField.setText(textComponents[(i - 1) / 3]);
+                textField.setBackground(panel.getBackground());
             }
+        }
+    }
+
+    /**
+     * function to edit the attribute of a task based on the given row number
+     *
+     * @param rowNum
+     */
+    public void editTask(int rowNum) {
+        if (rowNum == 0) { //Due date
+            String taskValue = JOptionPane.showInputDialog(TaskViewer.this,
+                    "Enter the new due date (must be in format xx/xx/xx): ");
+            task.setDueDate(taskValue);
+            getNewAttributes();
+        } else if (rowNum == 1) { //team members
+            String taskValue = JOptionPane.showInputDialog(TaskViewer.this,
+                    "Enter the new team members");
+            task.setAssignedMembers(taskValue);
+            getNewAttributes();
+            taskboard.tasksGroupChanged(task);
+        } else if (rowNum == 2) { //task status
+
+        } else { //notes
+            String taskValue = JOptionPane.showInputDialog(TaskViewer.this,
+                    "Enter the new note");
+            task.setNote(taskValue);
+            getNewAttributes();
         }
     }
 }

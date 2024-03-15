@@ -58,4 +58,29 @@ public class Task_GUI extends JPanel {
                 repaint(); // Repaint the panel to reflect changes
         });
     }
+
+    /**
+     * getter method for the task field
+     *
+     * @return
+     */
+    public Task getTask() {return task;}
+
+    /**
+     * boolean whether they are equal
+     *
+     * @param o
+     * @return
+     */
+    public boolean equals(Object o) {
+        if (o != null && (o instanceof Task_GUI)) {
+            Task_GUI otherTask = (Task_GUI) o;
+
+            if (otherTask.getTask().getTaskName().equals(task.getTaskName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

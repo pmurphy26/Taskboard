@@ -48,6 +48,18 @@ public class TaskBoard {
         return assignedTasks;
     }
 
+    public ArrayList<Task> getTasksForGroup(Set<User> users) {
+        ArrayList<Task> assignedTasks = new ArrayList<>();
+
+        for (Task t : tasks) {
+            if (t.sameTeam(users)) {
+                assignedTasks.add(t);
+            }
+        }
+
+        return assignedTasks;
+    }
+
     /**
      * adds a new task to the taskboard
      *

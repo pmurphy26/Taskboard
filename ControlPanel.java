@@ -8,6 +8,7 @@ import java.util.Set;
 public class ControlPanel extends JPanel {
     private JButton addTaskButton;
     private JButton addUserButton;
+    private JButton addTaskGroupButton;
     private JButton userProfileButton;
     private TaskBoardGUI taskBoard;
 
@@ -20,13 +21,15 @@ public class ControlPanel extends JPanel {
         setLayout(new BorderLayout());
         taskBoard = tbgui;
 
+        //user profile buttons
         userProfileButton = new JButton("User Profile");
         add(userProfileButton, BorderLayout.NORTH);
 
+        //other buttons panel
         JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-        addTaskButton = new JButton("Add Task");
-        buttonPanel.add(addTaskButton);
 
+        //add task button
+        addTaskButton = new JButton("Add Task");
         addTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,22 +51,34 @@ public class ControlPanel extends JPanel {
                 }
             }
         });
+        buttonPanel.add(addTaskButton);
 
+        //add user button
         addUserButton = new JButton("Add User");
-        buttonPanel.add(addUserButton);
-
-
         addUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String userName = JOptionPane.showInputDialog(ControlPanel.this, "Enter User Name: ");
                 if (userName != null && !userName.isEmpty()) {
-                    // Do something with the entered user name, such as adding it to a list of members
-                    System.out.println("New user added: " + userName);
                     addNewUser(new User(userName));
                 }
             }
         });
+        buttonPanel.add(addUserButton);
+
+        //add taskgroup button
+        addTaskGroupButton = new JButton("Add Task Group");
+        addTaskGroupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String users = JOptionPane.showInputDialog(
+                        ControlPanel.this, "Enter Names of members in group: ");
+                if (users != null && !users.isEmpty()) {
+                    addTaskGroup(getTeamMembers(users));
+                }
+            }
+        });
+        buttonPanel.add(addTaskGroupButton);
 
         add(buttonPanel, BorderLayout.CENTER);
 
@@ -164,12 +179,22 @@ public class ControlPanel extends JPanel {
     private Set<User> getTeamMembers(String teamMembersStr) {
         Set<User> teamMembers = new HashSet<>();
         // Split the input string by "/"
-        String[] parts = teamMembersStr.split(",");
+        String[] parts = teamMembersStr.trim().split(",");
         for (String user : parts) {
             User teamMember = new User(user);
             teamMembers.add(teamMember);
         }
 
         return teamMembers;
+    }
+
+    /**
+     * adds a task group comprised of the given members
+     *
+     * @param members
+     * @return
+     */
+    public boolean addTaskGroup(Set<User> members) {
+        return taskBoard.addNewTaskGroup(members);
     }
 }
