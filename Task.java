@@ -66,7 +66,9 @@ public class Task {
     }
 
     public void setDueDate(int[] dueDate) {
-        this.dueDate = dueDate;
+        if (dueDate != null) {
+            this.dueDate = dueDate;
+        }
     }
 
     public void setDueDate(String dueDateStr) {

@@ -130,11 +130,13 @@ public class ControlPanel extends JPanel {
      * @return
      */
     private Task createTaskFromStrings(String taskName, String dueDateStr, String teamMembers, String notes) {
-        int[] dueDate = changeDateString(dueDateStr);
-        Set<User> taskMembers = getTeamMembers(teamMembers);
+        if (taskName != null && dueDateStr != null && teamMembers != null && notes != null) {
+            int[] dueDate = changeDateString(dueDateStr);
+            Set<User> taskMembers = getTeamMembers(teamMembers);
 
-        if (dueDate != null) {
-            return new Task(taskName, dueDate, notes, taskMembers);
+            if (dueDate != null) {
+                return new Task(taskName, dueDate, notes, taskMembers);
+            }
         }
 
         return null;
