@@ -48,6 +48,12 @@ public class TaskBoard {
         return assignedTasks;
     }
 
+    /**
+     * gets the tasks for a given team
+     * 
+     * @param users
+     * @return
+     */
     public ArrayList<Task> getTasksForGroup(Set<User> users) {
         ArrayList<Task> assignedTasks = new ArrayList<>();
 
@@ -85,5 +91,9 @@ public class TaskBoard {
      */
     public boolean addNewMember(User newUser) {
         return teamMembers.add(newUser);
+    }
+
+    public ArrayList<User> getTeamMembers() {
+        return teamMembers;
     }
 }

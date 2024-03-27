@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class TaskBoardGUI {
@@ -90,6 +91,10 @@ public class TaskBoardGUI {
      * @return
      */
     public boolean addNewTaskGroup(Set<User> members) {
+        if (members == null) {
+            return false;
+        }
+
         TaskGroup newTaskGroup = new TaskGroup(members, this);
         Component[] components = taskPanel.getComponents();
 
@@ -105,7 +110,11 @@ public class TaskBoardGUI {
         // Revalidate and repaint the frame
         taskPanel.revalidate();
         taskPanel.repaint();
-        return false;
+        return true;
+    }
+
+    public ArrayList<User> getUsers() {
+        return taskboard.getTeamMembers();
     }
 
     /**

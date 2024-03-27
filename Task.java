@@ -157,6 +157,14 @@ public class Task {
         assignedMembers = getTeamMembers(membersStr);
     }
 
+    public void setAssignedMembers(Set<User> teamMembers) {
+        assignedMembers.clear();
+
+        for (User u : teamMembers) {
+            assignedMembers.add(u);
+        }
+    }
+
     /**
      * gets all the team members from a given set
      *

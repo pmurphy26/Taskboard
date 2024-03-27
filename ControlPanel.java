@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,12 +38,18 @@ public class ControlPanel extends JPanel {
                         "Enter the task: ");
                 String taskDateString = JOptionPane.showInputDialog(ControlPanel.this,
                         "Enter the due date (must enter in the form xx/xx/xx): ");
+
+
+                /*
                 String assignedMembersString = JOptionPane.showInputDialog(ControlPanel.this,
                         "Enter the assigned members: ");
+                */
+                Set<User> dropDownUsers = teamMembersDropDown();   
+
                 String additionalNotesString = JOptionPane.showInputDialog(ControlPanel.this,
                         "Enter any notes: ");
                 Task newTask = createTaskFromStrings(taskName, taskDateString,
-                        assignedMembersString, additionalNotesString);
+                        dropDownUsers, additionalNotesString);
 
                 if (newTask != null) {
                     addNewTask(newTask);
@@ -71,13 +78,11 @@ public class ControlPanel extends JPanel {
         addTaskGroupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String users = JOptionPane.showInputDialog(
-                        ControlPanel.this, "Enter Names of members in group: ");
-                if (users != null && !users.isEmpty()) {
-                    addTaskGroup(getTeamMembers(users));
-                }
+                Set<User> selectedUsers = teamMembersDropDown();
+                addTaskGroup(selectedUsers);
             }
         });
+
         buttonPanel.add(addTaskGroupButton);
 
         add(buttonPanel, BorderLayout.CENTER);
@@ -133,6 +138,18 @@ public class ControlPanel extends JPanel {
         if (taskName != null && dueDateStr != null && teamMembers != null && notes != null) {
             int[] dueDate = changeDateString(dueDateStr);
             Set<User> taskMembers = getTeamMembers(teamMembers);
+
+            if (dueDate != null) {
+                return new Task(taskName, dueDate, notes, taskMembers);
+            }
+        }
+
+        return null;
+    }
+
+    private Task createTaskFromStrings(String taskName, String dueDateStr, Set<User> taskMembers, String notes) {
+        if (taskName != null && dueDateStr != null && taskMembers != null && notes != null) {
+            int[] dueDate = changeDateString(dueDateStr);
 
             if (dueDate != null) {
                 return new Task(taskName, dueDate, notes, taskMembers);
@@ -198,5 +215,28 @@ public class ControlPanel extends JPanel {
      */
     public boolean addTaskGroup(Set<User> members) {
         return taskBoard.addNewTaskGroup(members);
+    }
+
+    public Set<User> teamMembersDropDown() {
+        ArrayList<User> users = taskBoard.getUsers();
+        JList<User> userListComponent = new JList<>(users.toArray(new User[0]));
+        userListComponent.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        int result = JOptionPane.showOptionDialog(null, new JScrollPane(userListComponent), "Select Users for Task Group", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+        if (result == JOptionPane.OK_OPTION) {
+            User[] selectedUsersArr = userListComponent.getSelectedValuesList().toArray(new User[0]);
+            Set<User> selectedUsers = new HashSet<>();
+            for (User user : selectedUsersArr) {
+                selectedUsers.add(user);
+            }
+            
+            if (selectedUsers.isEmpty()) {
+                return null;
+            }
+
+            return selectedUsers;
+        }
+
+        return null;
     }
 }

@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.String;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TaskViewer extends JPanel {
     private Task task;
@@ -208,12 +211,24 @@ public class TaskViewer extends JPanel {
             task.setDueDate(taskValue);
             getNewAttributes();
         } else if (rowNum == 1) { //team members
-            String taskValue = JOptionPane.showInputDialog(TaskViewer.this,
-                    "Enter the new team members");
-            System.out.println("Task value is " + taskValue);
-            task.setAssignedMembers(taskValue);
-            getNewAttributes();
-            taskboard.tasksGroupChanged(task);
+            ArrayList<User> users = taskboard.getUsers();
+            JList<User> userListComponent = new JList<>(users.toArray(new User[0]));
+            userListComponent.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    
+            int result = JOptionPane.showOptionDialog(null, new JScrollPane(userListComponent), "Select Users for Task Group", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+            if (result == JOptionPane.OK_OPTION) {
+                User[] selectedUsersArr = userListComponent.getSelectedValuesList().toArray(new User[0]);
+                Set<User> selectedUsers = new HashSet<>();
+                for (User user : selectedUsersArr) {
+                    selectedUsers.add(user);
+                }
+
+            
+
+                task.setAssignedMembers(selectedUsers);
+                getNewAttributes();
+                taskboard.tasksGroupChanged(task);
+            }
         } else if (rowNum == 2) { //task status
 
         } else { //notes
