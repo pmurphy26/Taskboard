@@ -210,6 +210,7 @@ public class TaskViewer extends JPanel {
         } else if (rowNum == 1) { //team members
             String taskValue = JOptionPane.showInputDialog(TaskViewer.this,
                     "Enter the new team members");
+            System.out.println("Task value is " + taskValue);
             task.setAssignedMembers(taskValue);
             getNewAttributes();
             taskboard.tasksGroupChanged(task);

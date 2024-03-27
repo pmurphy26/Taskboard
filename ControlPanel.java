@@ -178,8 +178,8 @@ public class ControlPanel extends JPanel {
      */
     private Set<User> getTeamMembers(String teamMembersStr) {
         Set<User> teamMembers = new HashSet<>();
-        // Split the input string by "/"
-        String[] parts = teamMembersStr.trim().split(",");
+        // Split the input string by ", "
+        String[] parts = teamMembersStr.trim().split(", ");
         for (String user : parts) {
             User teamMember = new User(user);
             teamMembers.add(teamMember);

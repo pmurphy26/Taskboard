@@ -73,7 +73,7 @@ public class TaskGroup extends JPanel {
             }
 
             if (!inSet) {
-                assignedMembers.add(member); //this is not working because hash algorithm gives different results
+                assignedMembers.add(member);
             }
         }
 
@@ -96,11 +96,19 @@ public class TaskGroup extends JPanel {
         // Find and remove the corresponding Task_GUI from the panel
         for (Task_GUI taskGUI : taskList) {
             if (taskGUI.getTask().equals(removedTask)) {
-                Task_GUI taskObject = new Task_GUI(removedTask, taskBoard);
-
                 JScrollPane jScrollPane = (JScrollPane) getComponents()[1];
                 JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
-                jScrollJPanel.remove(taskObject); //this line doesn't actually remove it for some reason
+
+                for (Component c : jScrollJPanel.getComponents()) {
+                    if (c instanceof Task_GUI) {
+                        Task_GUI taskGuiComp = (Task_GUI) c;
+
+                        if (taskGuiComp.getTask().equals(removedTask)) {
+                            jScrollJPanel.remove(c);
+                        }
+                    }
+                }
+                //jScrollJPanel.remove(taskObject); //this line doesn't actually remove it for some reason
                 revalidate();
                 repaint();
 

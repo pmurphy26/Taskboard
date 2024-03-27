@@ -94,7 +94,6 @@ public class TaskBoardGUI {
         Component[] components = taskPanel.getComponents();
 
         for (Task t : taskboard.getTasksForGroup(members)) {
-            System.out.println("Task is " + t);
             newTaskGroup.addTask(t);
         }
 
@@ -120,7 +119,7 @@ public class TaskBoardGUI {
                 TaskGroup group = (TaskGroup) taskPanel.getComponents()[i];
                 //if changed task was in this group and shouldn't be anymore
                 if (group.contains(changedTask)) {
-                    group.removeTask(changedTask); //this does not work yet because remove task hasn't been implemented
+                    group.removeTask(changedTask);
                 }
 
                 //if changed task should be in this group
