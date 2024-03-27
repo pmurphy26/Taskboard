@@ -72,6 +72,8 @@ public class TaskGroup extends JPanel {
                 }
             }
 
+            System.out.println(member + ", " + inSet);
+
             if (!inSet) {
                 assignedMembers.add(member);
             }

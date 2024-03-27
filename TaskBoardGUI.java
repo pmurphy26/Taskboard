@@ -104,7 +104,7 @@ public class TaskBoardGUI {
 
         //add in new task group
         taskPanel.remove(components.length - 1);
-        taskPanel.add(newTaskGroup); //add new taskgroup
+        taskPanel.add(newTaskGroup);
         taskPanel.add(taskViewer);
 
         // Revalidate and repaint the frame
@@ -113,6 +113,38 @@ public class TaskBoardGUI {
         return true;
     }
 
+    /**
+     * removes a task group with the given set of team members
+     * 
+     * @param members
+     * @return
+     */
+    public boolean removeTaskGroup(Set<User> members) {
+        Component[] components = taskPanel.getComponents();
+
+        if (members != null) {
+            for (int i = 1; i < components.length; i++) {
+                if (components[i] instanceof TaskGroup) {
+                    TaskGroup taskGroup = (TaskGroup) components[i];
+
+                    if (taskGroup.sameTeam(members)) {
+                        taskPanel.remove(components[i]);
+                        taskPanel.revalidate();
+                        taskPanel.repaint();
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * returns a list of the team members on the taskboard
+     * 
+     * @return
+     */
     public ArrayList<User> getUsers() {
         return taskboard.getTeamMembers();
     }

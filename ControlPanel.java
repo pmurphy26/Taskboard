@@ -10,6 +10,7 @@ public class ControlPanel extends JPanel {
     private JButton addTaskButton;
     private JButton addUserButton;
     private JButton addTaskGroupButton;
+    private JButton removeTaskGroupButton;
     private JButton userProfileButton;
     private TaskBoardGUI taskBoard;
 
@@ -34,22 +35,11 @@ public class ControlPanel extends JPanel {
         addTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String taskName = JOptionPane.showInputDialog(ControlPanel.this,
-                        "Enter the task: ");
-                String taskDateString = JOptionPane.showInputDialog(ControlPanel.this,
-                        "Enter the due date (must enter in the form xx/xx/xx): ");
-
-
-                /*
-                String assignedMembersString = JOptionPane.showInputDialog(ControlPanel.this,
-                        "Enter the assigned members: ");
-                */
+                String taskName = JOptionPane.showInputDialog(ControlPanel.this, "Enter the task: ");
+                String taskDateString = JOptionPane.showInputDialog(ControlPanel.this,"Enter the due date (must enter in the form xx/xx/xx): ");
                 Set<User> dropDownUsers = teamMembersDropDown();   
-
-                String additionalNotesString = JOptionPane.showInputDialog(ControlPanel.this,
-                        "Enter any notes: ");
-                Task newTask = createTaskFromStrings(taskName, taskDateString,
-                        dropDownUsers, additionalNotesString);
+                String additionalNotesString = JOptionPane.showInputDialog(ControlPanel.this,"Enter any notes: ");
+                Task newTask = createTaskFromStrings(taskName, taskDateString, dropDownUsers, additionalNotesString);
 
                 if (newTask != null) {
                     addNewTask(newTask);
@@ -85,6 +75,19 @@ public class ControlPanel extends JPanel {
 
         buttonPanel.add(addTaskGroupButton);
 
+
+        //remove taskgroup button
+        removeTaskGroupButton = new JButton("Remove Task Group");
+        removeTaskGroupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Set<User> selectedUsers = teamMembersDropDown();
+                removeTaskGroup(selectedUsers);
+            }
+        });
+
+        buttonPanel.add(removeTaskGroupButton);
+
         add(buttonPanel, BorderLayout.CENTER);
 
     }
@@ -105,10 +108,11 @@ public class ControlPanel extends JPanel {
     public void addNewTask(Task newTask) {
         taskBoard.addNewTask(newTask);
 
-        SwingUtilities.invokeLater(() -> {
+        /*SwingUtilities.invokeLater(() -> {
             revalidate(); // Revalidate the panel to reflect changes
             repaint(); // Repaint the panel to reflect changes
         });
+        */
     }
 
     /**
@@ -147,6 +151,15 @@ public class ControlPanel extends JPanel {
         return null;
     }
 
+    /**
+     * creates a task from three strings and a set
+     * 
+     * @param taskName
+     * @param dueDateStr
+     * @param taskMembers
+     * @param notes
+     * @return
+     */
     private Task createTaskFromStrings(String taskName, String dueDateStr, Set<User> taskMembers, String notes) {
         if (taskName != null && dueDateStr != null && taskMembers != null && notes != null) {
             int[] dueDate = changeDateString(dueDateStr);
@@ -215,6 +228,16 @@ public class ControlPanel extends JPanel {
      */
     public boolean addTaskGroup(Set<User> members) {
         return taskBoard.addNewTaskGroup(members);
+    }
+
+    /**
+     * removes a task group with the given members
+     * 
+     * @param members
+     * @return
+     */
+    public boolean removeTaskGroup(Set<User> members) {
+        return taskBoard.removeTaskGroup(members);
     }
 
     public Set<User> teamMembersDropDown() {
