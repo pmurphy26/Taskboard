@@ -226,7 +226,15 @@ public class TaskViewer extends JPanel {
                 taskboard.tasksGroupChanged(task);
             }
         } else if (rowNum == 2) { //task status
+            TaskStatus[] possibleStatus = new TaskStatus[] {TaskStatus.NOT_STARTED, TaskStatus.IN_PROGRESS, TaskStatus.COMPLETED};
+            JComboBox<TaskStatus> userComboBox = new JComboBox<>(possibleStatus);
 
+            int result = JOptionPane.showOptionDialog(this, userComboBox, "Select task status", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+            if (result == JOptionPane.OK_OPTION) {
+                TaskStatus selectedStatus = (TaskStatus) userComboBox.getSelectedItem();
+                task.setStatus(selectedStatus);
+                getNewAttributes();
+            }
         } else { //notes
             String taskValue = JOptionPane.showInputDialog(TaskViewer.this,
                     "Enter the new note");

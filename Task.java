@@ -11,15 +11,6 @@ public class Task {
     private Set<User> assignedMembers;
 
     /**
-     * Enum TaskStatus
-     */
-    public enum TaskStatus {
-        NOT_STARTED(),
-        IN_PROGRESS,
-        COMPLETED
-    }
-
-    /**
      * creates a new Task object
      */
     public Task() {
