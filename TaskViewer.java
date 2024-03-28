@@ -101,8 +101,6 @@ public class TaskViewer extends JPanel {
                     JLabel nameLabel = new JLabel("<html>" + attributeNames[row] + "</html>");
                     Border border = BorderFactory.createLineBorder(Color.black, 5);
                     nameLabel.setBorder(border); // Add padding
-                    nameLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-                    nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
                     panel.add(nameLabel);
                 } else if (col == 1) {
                     //attribute value
@@ -190,7 +188,7 @@ public class TaskViewer extends JPanel {
             JPanel comp = (JPanel) attributesPanel.getComponents()[0];
             for (int i = 1; i < comp.getComponents().length; i+=3) {
                 JLabel panel = (JLabel) comp.getComponents()[i - 1];
-                JTextField textField = (JTextField) comp.getComponents()[i];
+                JTextArea textField = (JTextArea) comp.getComponents()[i];
                 textField.setText(textComponents[(i - 1) / 3]);
                 textField.setBackground(panel.getBackground());
             }
