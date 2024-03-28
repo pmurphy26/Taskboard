@@ -28,7 +28,9 @@ public class ControlPanel extends JPanel {
         add(userProfileButton, BorderLayout.NORTH);
 
         //other buttons panel
-        JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
+        JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 0, 25));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
 
         //add task button
         addTaskButton = new JButton("Add Task");
@@ -87,9 +89,8 @@ public class ControlPanel extends JPanel {
         });
 
         buttonPanel.add(removeTaskGroupButton);
-
+        buttonPanel.setBackground(Color.white);
         add(buttonPanel, BorderLayout.CENTER);
-
     }
 
     public JButton getAddTaskButton() {
@@ -122,11 +123,6 @@ public class ControlPanel extends JPanel {
      */
     public void addNewUser(User newUser) {
         taskBoard.addNewUser(newUser);
-
-        SwingUtilities.invokeLater(() -> {
-            revalidate(); // Revalidate the panel to reflect changes
-            repaint(); // Repaint the panel to reflect changes
-        });
     }
 
     /**

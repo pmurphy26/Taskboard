@@ -90,9 +90,18 @@ public class TaskBoard {
      * @return
      */
     public boolean addNewMember(User newUser) {
-        return teamMembers.add(newUser);
+        if (!teamMembers.contains(newUser)) {
+            return teamMembers.add(newUser);
+        }
+
+        return false;
     }
 
+    /**
+     * returns a list of the team members
+     * 
+     * @return
+     */
     public ArrayList<User> getTeamMembers() {
         return teamMembers;
     }

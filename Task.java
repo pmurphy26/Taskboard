@@ -129,13 +129,32 @@ public class Task {
         this.status = status;
     }
 
+    /**
+     * returns boolean of whether the task has the given user
+     * 
+     * @param u
+     * @return
+     */
     public boolean hasUser(User u) {
         return assignedMembers.contains(u);
     }
 
+    /**
+     * adds a user to the task
+     * 
+     * @param u
+     * @return
+     */
     public boolean addUser(User u) {
         return assignedMembers.add(u);
     }
+
+    /**
+     * removes the user from the task
+     * 
+     * @param u
+     * @return
+     */
     public boolean removeUser(User u) {
         if (assignedMembers.contains(u)) {
             u.removeTask(this);
@@ -144,6 +163,11 @@ public class Task {
         return false;
     }
 
+    /**
+     * gets all the assigned members to the task
+     * 
+     * @return
+     */
     public Set<User> getAssignedMembers() {
         return assignedMembers;
     }
@@ -216,6 +240,9 @@ public class Task {
         return false;
     }
 
+    /**
+     * String implementation of Task
+     */
     public String toString() {
         return taskName;
     }

@@ -41,15 +41,9 @@ public class TaskViewer extends JPanel {
 
         attributesPanel = new JPanel(new BorderLayout());
         Border border = BorderFactory.createLineBorder(Color.BLACK);
-        attributesPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        //attributesPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        attributesPanel.setBorder(border);
 
-        // Add attributes with vertical line border between attribute label and value
-        /*
-        addAttribute(attributesPanel, "Due Date", "Task not selected yet");
-        addAttribute(attributesPanel, "Assigned Members", "Task not selected yet");
-        addAttribute(attributesPanel, "Task Status", "Task not selected yet");
-        addAttribute(attributesPanel, "Additional Notes", "Task not selected Yet");
-        */
 
         addAttributes(attributesPanel, new String[] {"Due<br>date", "Assigned<br>Members",
                 "Task<br>Status", "Additional<br>Notes"},
@@ -105,19 +99,23 @@ public class TaskViewer extends JPanel {
                 if (col == 0) {
                     //attribute label
                     JLabel nameLabel = new JLabel("<html>" + attributeNames[row] + "</html>");
-                    nameLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
+                    Border border = BorderFactory.createLineBorder(Color.black, 5);
+                    nameLabel.setBorder(border); // Add padding
+                    nameLabel.setHorizontalTextPosition(SwingConstants.CENTER);
                     nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
                     panel.add(nameLabel);
                 } else if (col == 1) {
                     //attribute value
-                    JTextField valueLabel = new JTextField(attributeValues[row]);
+                    JTextArea valueLabel = new JTextArea(attributeValues[row]);
                     valueLabel.setBackground(panel.getComponents()[0].getBackground());
-
-                    valueLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
+                    valueLabel.setLineWrap(true);
+                    //valueLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
+                    Border border = BorderFactory.createLineBorder(Color.black, 5);
+                    valueLabel.setBorder(border); // Add padding
                     panel.add(valueLabel);
                 } else {
                     //create edit button
-                    JButton editButton = new JButton("edit " + row);
+                    JButton editButton = new JButton("edit");
                     int finalRow = row;
                     editButton.addActionListener(new ActionListener() {
                         @Override

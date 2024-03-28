@@ -72,8 +72,6 @@ public class TaskGroup extends JPanel {
                 }
             }
 
-            System.out.println(member + ", " + inSet);
-
             if (!inSet) {
                 assignedMembers.add(member);
             }
@@ -110,7 +108,6 @@ public class TaskGroup extends JPanel {
                         }
                     }
                 }
-                //jScrollJPanel.remove(taskObject); //this line doesn't actually remove it for some reason
                 revalidate();
                 repaint();
 
