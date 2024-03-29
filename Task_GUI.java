@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Task_GUI extends JPanel {
-    private JCheckBox checkBox;
     private JButton taskButton;
     private JButton upButton;
     private JButton downButton;
@@ -20,34 +19,21 @@ public class Task_GUI extends JPanel {
         this.task = task;
         setLayout(new BorderLayout());
 
-        checkBox = new JCheckBox();
-        add(checkBox, BorderLayout.WEST);
-
         taskButton = new JButton(task.getTaskName());
         taskButton.setHorizontalAlignment(SwingConstants.LEFT);
         taskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buttonPush();
+                nameButtonPush();
             }
         });
         add(taskButton, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 1));
-
-        upButton = new JButton("\u2191"); // Up arrow Unicode character
-        buttonPanel.add(upButton);
-
-        downButton = new JButton("\u2193"); // Down arrow Unicode character
-        buttonPanel.add(downButton);
-
-        add(buttonPanel, BorderLayout.EAST);
     }
 
     /**
      * method currently called when taskName button is pressed
      */
-    public void buttonPush() {
+    public void nameButtonPush() {
         // Perform action that modifies GUI components
         // For example, change the text of the taskButton
         taskBoard.changeSelectedTask(task);

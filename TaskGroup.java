@@ -77,11 +77,23 @@ public class TaskGroup extends JPanel {
             }
         }
 
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1));
+
+        JButton upButton = new JButton("\u2191"); // Up arrow Unicode character
+        buttonPanel.add(upButton);
+
+        JButton downButton = new JButton("\u2193"); // Down arrow Unicode character
+        buttonPanel.add(downButton);
+
         Task_GUI taskObject = new Task_GUI(newTask, taskBoard);
+        JPanel taskGUIPanel = new JPanel(new BorderLayout());
         taskList.add(taskObject);
         JScrollPane jScrollPane = (JScrollPane) getComponents()[1];
         JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
-        jScrollJPanel.add(taskObject);
+        taskGUIPanel.add(buttonPanel, BorderLayout.EAST);
+        taskGUIPanel.add(taskObject, BorderLayout.CENTER);
+        jScrollJPanel.add(taskGUIPanel);
+
         revalidate();
         repaint();
     }
@@ -100,14 +112,20 @@ public class TaskGroup extends JPanel {
                 JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
 
                 for (Component c : jScrollJPanel.getComponents()) {
-                    if (c instanceof Task_GUI) {
-                        Task_GUI taskGuiComp = (Task_GUI) c;
+                    if (c instanceof JPanel) {
+                        JPanel jp = (JPanel) c;
+                        for (Component comp : jp.getComponents()) {
+                            if (comp instanceof Task_GUI) {
+                                Task_GUI taskGuiComp = (Task_GUI) comp;
 
-                        if (taskGuiComp.getTask().equals(removedTask)) {
-                            jScrollJPanel.remove(c);
+                                if (taskGuiComp.getTask().equals(removedTask)) {
+                                    jScrollJPanel.remove(c);
+                                }
+                            }
                         }
                     }
                 }
+
                 revalidate();
                 repaint();
 
