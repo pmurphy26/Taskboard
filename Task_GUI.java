@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 
 public class Task_GUI extends JPanel {
     private JButton taskButton;
-    private JButton upButton;
-    private JButton downButton;
     private Task task;
     private TaskBoardGUI taskBoard;
 

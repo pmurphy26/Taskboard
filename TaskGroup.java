@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -77,16 +79,22 @@ public class TaskGroup extends JPanel {
             }
         }
 
+        JPanel taskGUIPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel(new GridLayout(2, 1));
 
         JButton upButton = new JButton("\u2191"); // Up arrow Unicode character
+        upButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                componentMoved(taskGUIPanel, true);
+            }
+        });
         buttonPanel.add(upButton);
 
         JButton downButton = new JButton("\u2193"); // Down arrow Unicode character
         buttonPanel.add(downButton);
 
         Task_GUI taskObject = new Task_GUI(newTask, taskBoard);
-        JPanel taskGUIPanel = new JPanel(new BorderLayout());
         taskList.add(taskObject);
         JScrollPane jScrollPane = (JScrollPane) getComponents()[1];
         JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
@@ -183,6 +191,24 @@ public class TaskGroup extends JPanel {
         }
 
         return false;
+    }
+
+    private void componentMoved(Component movingComponent, boolean moveUp) {
+        JScrollPane jScrollPane = (JScrollPane) getComponents()[1];
+        JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
+        Component[] components = jScrollJPanel.getComponents();
+        for (int i = 1; i < components.length; i++) {
+            Component c = components[i];
+
+            if (movingComponent.equals(c)) { //figure out why this doesn't work
+                Component temp = components[i-1];
+                jScrollJPanel.remove(i-1);
+                jScrollJPanel.add(temp, i);
+                revalidate();
+                repaint();
+                return;
+            }
+        }
     }
 
     public JLabel getTitleLabel() {return titleLabel;}
