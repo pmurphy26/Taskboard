@@ -86,12 +86,18 @@ public class TaskGroup extends JPanel {
         upButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                componentMoved(taskGUIPanel, true);
+                componentMovedUp(taskGUIPanel);
             }
         });
         buttonPanel.add(upButton);
 
         JButton downButton = new JButton("\u2193"); // Down arrow Unicode character
+        downButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                componentMovedDown(taskGUIPanel);
+            }
+        });
         buttonPanel.add(downButton);
 
         Task_GUI taskObject = new Task_GUI(newTask, taskBoard);
@@ -193,16 +199,44 @@ public class TaskGroup extends JPanel {
         return false;
     }
 
-    private void componentMoved(Component movingComponent, boolean moveUp) {
+    /**
+     * Moves a component up one spot
+     * 
+     * @param movingComponent
+     */
+    private void componentMovedUp(Component movingComponent) {
         JScrollPane jScrollPane = (JScrollPane) getComponents()[1];
         JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
         Component[] components = jScrollJPanel.getComponents();
         for (int i = 1; i < components.length; i++) {
             Component c = components[i];
 
-            if (movingComponent.equals(c)) { //figure out why this doesn't work
+            if (movingComponent.equals(c)) {
                 Component temp = components[i-1];
                 jScrollJPanel.remove(i-1);
+                jScrollJPanel.add(temp, i);
+                revalidate();
+                repaint();
+                return;
+            }
+        }
+    }
+
+    /**
+     * Moves a component down one spot
+     * 
+     * @param movingComponent
+     */
+    private void componentMovedDown(Component movingComponent) {
+        JScrollPane jScrollPane = (JScrollPane) getComponents()[1];
+        JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
+        Component[] components = jScrollJPanel.getComponents();
+        for (int i = 0; i < components.length - 1; i++) {
+            Component c = components[i];
+
+            if (movingComponent.equals(c)) {
+                Component temp = components[i+1];
+                jScrollJPanel.remove(i+1);
                 jScrollJPanel.add(temp, i);
                 revalidate();
                 repaint();
