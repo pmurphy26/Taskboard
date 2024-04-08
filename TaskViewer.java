@@ -91,7 +91,8 @@ public class TaskViewer extends JPanel {
      * @param attributeValues
      */
     private void addAttributes(JPanel viewerPanel, String[] attributeNames, String[] attributeValues) {
-        JPanel panel = new JPanel(new GridLayout(4, 3));
+        //JPanel panel = new JPanel(new GridLayout(4, 3));
+        JPanel panel = new JPanel(new GridBagLayout());
 
         // Add components to the panel
         for (int row = 0; row < 4; row++) {
@@ -99,18 +100,39 @@ public class TaskViewer extends JPanel {
                 if (col == 0) {
                     //attribute label
                     JLabel nameLabel = new JLabel("<html>" + attributeNames[row] + "</html>");
-                    Border border = BorderFactory.createLineBorder(Color.black, 5);
+                    //Border border = BorderFactory.createLineBorder(Color.black, 5);
+                    Border border = BorderFactory.createMatteBorder(5, 5, 5, 0, Color.black);
                     nameLabel.setBorder(border); // Add padding
-                    panel.add(nameLabel);
+                    nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+                    GridBagConstraints gbc1 = new GridBagConstraints();
+                    gbc1.gridx = 0;
+                    gbc1.gridy = row;
+                    gbc1.weightx = 2;
+                    gbc1.weighty = 1;
+                    gbc1.fill = GridBagConstraints.BOTH;
+                    panel.add(nameLabel, gbc1);
+
+                    //panel.add(nameLabel);
                 } else if (col == 1) {
                     //attribute value
                     JTextArea valueLabel = new JTextArea(attributeValues[row]);
                     valueLabel.setBackground(panel.getComponents()[0].getBackground());
                     valueLabel.setLineWrap(true);
                     //valueLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
-                    Border border = BorderFactory.createLineBorder(Color.black, 5);
+                    //Border border = BorderFactory.createLineBorder(Color.black, 5);
+                    Border border = BorderFactory.createMatteBorder(5, 0, 5, 5, Color.black);
                     valueLabel.setBorder(border); // Add padding
-                    panel.add(valueLabel);
+
+                    GridBagConstraints gbc2 = new GridBagConstraints();
+                    gbc2.gridx = 1;
+                    gbc2.gridy = row;
+                    gbc2.weightx = 2; // Twice as wide as other columns
+                    gbc2.weighty = 1;
+                    gbc2.fill = GridBagConstraints.BOTH;
+                    panel.add(valueLabel, gbc2);
+
+                    //panel.add(valueLabel);
                 } else {
                     //create edit button
                     JButton editButton = new JButton("edit");
@@ -121,7 +143,16 @@ public class TaskViewer extends JPanel {
                             editTask(finalRow);
                         }
                     });
-                    panel.add(editButton);
+
+                    GridBagConstraints gbc3 = new GridBagConstraints();
+                    gbc3.gridx = 2;
+                    gbc3.gridy = row;
+                    gbc3.weightx = 1;
+                    gbc3.weighty = 1;
+                    gbc3.fill = GridBagConstraints.BOTH;
+                    panel.add(editButton, gbc3);
+
+                    //panel.add(editButton);
                 }
             }
         }
