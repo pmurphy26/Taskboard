@@ -47,6 +47,7 @@ public class TaskGroup extends JPanel {
         setLayout(new BorderLayout());
         assignedMembers = members;
         String title = members.toString();
+        title = title.substring(1, title.length() - 1);
 
         titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Increase font size
@@ -89,6 +90,8 @@ public class TaskGroup extends JPanel {
                 componentMovedUp(taskGUIPanel);
             }
         });
+        upButton.setForeground(new Color(50, 100, 225));
+        upButton.setBackground(Color.WHITE);
         buttonPanel.add(upButton);
 
         JButton downButton = new JButton("\u2193"); // Down arrow Unicode character
@@ -98,6 +101,8 @@ public class TaskGroup extends JPanel {
                 componentMovedDown(taskGUIPanel);
             }
         });
+        downButton.setForeground(new Color(50, 100, 225));
+        downButton.setBackground(Color.WHITE);
         buttonPanel.add(downButton);
 
         Task_GUI taskObject = new Task_GUI(newTask, taskBoard);

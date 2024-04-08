@@ -50,6 +50,9 @@ public class ControlPanel extends JPanel {
                 }
             }
         });
+        addTaskButton.setBackground(new Color(50, 100, 225));
+        addTaskButton.setForeground(Color.WHITE);
+        //addTaskButton.setOpaque(true);
         buttonPanel.add(addTaskButton);
 
         //add user button
@@ -63,6 +66,8 @@ public class ControlPanel extends JPanel {
                 }
             }
         });
+        addUserButton.setBackground(new Color(50, 100, 225));
+        addUserButton.setForeground(Color.WHITE);
         buttonPanel.add(addUserButton);
 
         //add taskgroup button
@@ -74,7 +79,8 @@ public class ControlPanel extends JPanel {
                 addTaskGroup(selectedUsers);
             }
         });
-
+        addTaskGroupButton.setBackground(new Color(50, 100, 225));
+        addTaskGroupButton.setForeground(Color.WHITE);
         buttonPanel.add(addTaskGroupButton);
 
 
@@ -87,7 +93,8 @@ public class ControlPanel extends JPanel {
                 removeTaskGroup(selectedUsers);
             }
         });
-
+        removeTaskGroupButton.setBackground(new Color(50, 100, 225));
+        removeTaskGroupButton.setForeground(Color.WHITE);
         buttonPanel.add(removeTaskGroupButton);
         buttonPanel.setBackground(Color.white);
         add(buttonPanel, BorderLayout.CENTER);

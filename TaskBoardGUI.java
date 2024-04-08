@@ -71,7 +71,11 @@ public class TaskBoardGUI {
             }
         }
 
-        allTasks.addTask(newTask);
+        allTasks.addTask(newTask); 
+
+
+        //make task be selected task immediately
+        changeSelectedTask(newTask);
     }
 
     /**

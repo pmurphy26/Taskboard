@@ -96,6 +96,8 @@ public class TaskViewer extends JPanel {
 
         // Add components to the panel
         for (int row = 0; row < 4; row++) {
+            Color backgroundColor = getRowColor(row);
+            
             for (int col = 0; col < 3; col++) {
                 if (col == 0) {
                     //attribute label
@@ -111,13 +113,16 @@ public class TaskViewer extends JPanel {
                     gbc1.weightx = 2;
                     gbc1.weighty = 1;
                     gbc1.fill = GridBagConstraints.BOTH;
+
+                    nameLabel.setOpaque(true);
+                    nameLabel.setBackground(backgroundColor);
                     panel.add(nameLabel, gbc1);
 
                     //panel.add(nameLabel);
                 } else if (col == 1) {
                     //attribute value
                     JTextArea valueLabel = new JTextArea(attributeValues[row]);
-                    valueLabel.setBackground(panel.getComponents()[0].getBackground());
+                    valueLabel.setBackground(backgroundColor);
                     valueLabel.setLineWrap(true);
                     //valueLabel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Add padding
                     //Border border = BorderFactory.createLineBorder(Color.black, 5);
@@ -272,5 +277,35 @@ public class TaskViewer extends JPanel {
             task.setNote(taskValue);
             getNewAttributes();
         }
+    }
+
+    public Color getRowColor(int rowNum) {
+        int red = 0; // Red component
+        int green = 0; // Green component
+        int blue = 0; // Blue component
+        
+        if (rowNum == 0) { //light green
+            red = 145;
+            green = 240;
+            blue = 145; 
+        } else if (rowNum == 1) {
+            red = 100;
+            green = 225;
+            blue = 200; 
+        } else if (rowNum == 2) {
+            red = 115;
+            green = 170;
+            blue = 225; 
+        } else {
+            red = 200;
+            green = 230;
+            blue = 255; 
+        }
+
+        
+
+        // Create light green color using RGB values
+        Color returnColor = new Color(red, green, blue);
+        return returnColor;
     }
 }

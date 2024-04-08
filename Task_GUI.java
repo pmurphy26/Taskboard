@@ -25,6 +25,8 @@ public class Task_GUI extends JPanel {
                 nameButtonPush();
             }
         });
+        taskButton.setBackground(new Color(50, 100, 225));
+        taskButton.setForeground(Color.WHITE);
         add(taskButton, BorderLayout.CENTER);
     }
 
