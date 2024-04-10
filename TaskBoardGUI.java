@@ -174,4 +174,23 @@ public class TaskBoardGUI {
             }
         }
     }
+
+    public void taskProgressChange(Task searchedTask) {
+        for (int i = 0; i < taskPanel.getComponents().length; i++) {
+            if (taskPanel.getComponents()[i] instanceof TaskGroup) {
+                TaskGroup group = (TaskGroup) taskPanel.getComponents()[i];
+                //if searched task was in this group
+                if (group.contains(searchedTask)) {
+                    group.getTaskGUI(searchedTask).setColor();
+
+                    if (searchedTask.getStatus() == TaskStatus.COMPLETED) {
+                        group.moveTaskToBottom(searchedTask);
+                    }
+
+                    group.revalidate();
+                    group.repaint();
+                }
+            }
+        }
+    }
 }

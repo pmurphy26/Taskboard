@@ -25,7 +25,7 @@ public class Task_GUI extends JPanel {
                 nameButtonPush();
             }
         });
-        taskButton.setBackground(new Color(50, 100, 225));
+        setColor();
         taskButton.setForeground(Color.WHITE);
         add(taskButton, BorderLayout.CENTER);
     }
@@ -51,6 +51,19 @@ public class Task_GUI extends JPanel {
      * @return
      */
     public Task getTask() {return task;}
+
+    /**
+     * sets the GUI color based on the task status
+     */
+    public void setColor() {
+        if (task.getStatus() == TaskStatus.NOT_STARTED) {
+            taskButton.setBackground(new Color(225, 75, 50));
+        }  else if (task.getStatus() == TaskStatus.IN_PROGRESS) {
+            taskButton.setBackground(new Color(250, 200, 0));
+        } else if (task.getStatus() == TaskStatus.COMPLETED) {
+            taskButton.setBackground(new Color(100, 200, 0));
+        }
+    }
 
     /**
      * boolean whether they are equal

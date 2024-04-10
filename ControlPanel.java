@@ -23,6 +23,10 @@ public class ControlPanel extends JPanel {
         setLayout(new BorderLayout());
         taskBoard = tbgui;
 
+        int red = 0;
+        int green = 175;
+        int blue = 200;
+
         //user profile buttons
         userProfileButton = new JButton("User Profile");
         add(userProfileButton, BorderLayout.NORTH);
@@ -50,7 +54,7 @@ public class ControlPanel extends JPanel {
                 }
             }
         });
-        addTaskButton.setBackground(new Color(50, 100, 225));
+        addTaskButton.setBackground(new Color(red, green, blue));
         addTaskButton.setForeground(Color.WHITE);
         //addTaskButton.setOpaque(true);
         buttonPanel.add(addTaskButton);
@@ -66,7 +70,7 @@ public class ControlPanel extends JPanel {
                 }
             }
         });
-        addUserButton.setBackground(new Color(50, 100, 225));
+        addUserButton.setBackground(new Color(red, green, blue));
         addUserButton.setForeground(Color.WHITE);
         buttonPanel.add(addUserButton);
 
@@ -79,7 +83,7 @@ public class ControlPanel extends JPanel {
                 addTaskGroup(selectedUsers);
             }
         });
-        addTaskGroupButton.setBackground(new Color(50, 100, 225));
+        addTaskGroupButton.setBackground(new Color(red, green, blue));
         addTaskGroupButton.setForeground(Color.WHITE);
         buttonPanel.add(addTaskGroupButton);
 
@@ -93,7 +97,7 @@ public class ControlPanel extends JPanel {
                 removeTaskGroup(selectedUsers);
             }
         });
-        removeTaskGroupButton.setBackground(new Color(50, 100, 225));
+        removeTaskGroupButton.setBackground(new Color(red, green, blue));
         removeTaskGroupButton.setForeground(Color.WHITE);
         buttonPanel.add(removeTaskGroupButton);
         buttonPanel.setBackground(Color.white);

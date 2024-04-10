@@ -271,6 +271,8 @@ public class TaskViewer extends JPanel {
                 task.setStatus(selectedStatus);
                 getNewAttributes();
             }
+
+            taskboard.taskProgressChange(task);
         } else { //notes
             String taskValue = JOptionPane.showInputDialog(TaskViewer.this,
                     "Enter the new note");
@@ -279,6 +281,12 @@ public class TaskViewer extends JPanel {
         }
     }
 
+    /**
+     * returns the corresponding color for the given row
+     * 
+     * @param rowNum
+     * @return
+     */
     public Color getRowColor(int rowNum) {
         int red = 0; // Red component
         int green = 0; // Green component

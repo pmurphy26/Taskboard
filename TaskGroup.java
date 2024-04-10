@@ -155,7 +155,17 @@ public class TaskGroup extends JPanel {
         return false;
     }
 
-    public void rearrangeTasks() {}
+    public Task_GUI getTaskGUI(Task searchedTask) {
+        // Find and remove the corresponding Task_GUI from the panel
+        for (Task_GUI taskGUI : taskList) {
+            if (taskGUI.getTask().equals(searchedTask)) {
+                return taskGUI;
+            }
+        }
+
+        return null;
+    }
+
 
     /**
      * returns if a task group is the same as the group given
@@ -232,7 +242,7 @@ public class TaskGroup extends JPanel {
      * 
      * @param movingComponent
      */
-    private void componentMovedDown(Component movingComponent) {
+    private boolean componentMovedDown(Component movingComponent) {
         JScrollPane jScrollPane = (JScrollPane) getComponents()[1];
         JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
         Component[] components = jScrollJPanel.getComponents();
@@ -245,9 +255,44 @@ public class TaskGroup extends JPanel {
                 jScrollJPanel.add(temp, i);
                 revalidate();
                 repaint();
-                return;
+                return true;
             }
         }
+
+        return false;
+    }
+
+    /**
+     * moves a given task to bottom of group
+     * 
+     * @param movedTask
+     * @return
+     */
+    public boolean moveTaskToBottom(Task movedTask) {
+        JScrollPane jScrollPane = (JScrollPane) getComponents()[1];
+        JPanel jScrollJPanel = (JPanel) jScrollPane.getViewport().getView();
+        Component[] components = jScrollJPanel.getComponents();
+        for (int i = 0; i < components.length; i++) {
+            Component c = components[i];
+
+            Task cTask = null;
+            for (Component comp : ((JPanel)c).getComponents()) {
+                if (comp instanceof Task_GUI) {
+                    Task_GUI tgui = (Task_GUI) comp;
+                    cTask = tgui.getTask();
+                }
+            }
+
+            if (cTask.equals(movedTask)) {
+                boolean atBottom = false;
+                while (!atBottom) {
+                    atBottom = !componentMovedDown(c);
+                }
+                return atBottom;
+            }
+        }
+        
+        return false;
     }
 
     public JLabel getTitleLabel() {return titleLabel;}
