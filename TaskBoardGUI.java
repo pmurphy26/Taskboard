@@ -5,19 +5,23 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class TaskBoardGUI {
+public class TaskBoardGUI extends JFrame {
     private TaskGroup allTasks;
     private JPanel taskPanel;
     private ControlPanel controlPanel;
     private TaskViewer taskViewer;
-    private TaskBoard taskboard = new TaskBoard("Testing board");
+    private TaskBoard taskboard;
 
     /**
      * creates a new taskboard GUI
      */
-    public TaskBoardGUI() {
+    public TaskBoardGUI(String taskboardName) {
+        taskboard = new TaskBoard(taskboardName);
         // Create TaskGroups
         allTasks = new TaskGroup("All tasks", this);
+        
+        //set own layout
+        setLayout(new BorderLayout());
 
         // Create TaskViewer
         taskViewer = new TaskViewer(this);
@@ -25,23 +29,19 @@ public class TaskBoardGUI {
         //create control panel
         controlPanel = new ControlPanel(this);
 
-        // Create JFrame
-        JFrame frame = new JFrame("Task Viewer and Groups Example");
-        frame.setLayout(new BorderLayout());
-
         // Create panel for TaskGroups and TaskViewer
         taskPanel = new JPanel(new GridLayout(1, 4));
         taskPanel.add(allTasks);
         taskPanel.add(taskViewer);
 
         // Add components to JFrame
-        frame.add(controlPanel, BorderLayout.WEST);
-        frame.add(taskPanel, BorderLayout.CENTER);
+        add(controlPanel, BorderLayout.WEST);
+        add(taskPanel, BorderLayout.CENTER);
 
         // Set frame properties
-        frame.setSize(800, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        setSize(800, 400);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);//EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
     /**
@@ -192,6 +192,11 @@ public class TaskBoardGUI {
         }
     }
 
+    /**
+     * updates given task's progress
+     * 
+     * @param searchedTask
+     */
     public void taskProgressChange(Task searchedTask) {
         for (int i = 0; i < taskPanel.getComponents().length; i++) {
             if (taskPanel.getComponents()[i] instanceof TaskGroup) {
@@ -209,5 +214,14 @@ public class TaskBoardGUI {
                 }
             }
         }
+    }
+
+    /**
+     * getter method for the taskboard's name
+     * 
+     * @return
+     */
+    public String getTaskBoardName() {
+        return taskboard.getName();
     }
 }

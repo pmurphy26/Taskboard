@@ -23,23 +23,12 @@ public class Main {
      */
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new TaskBoardGUI());
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                JFrame frame = new HomepageGUI();//TaskBoardGUI();
+            }
+        });
+            //() -> );
         
-        /*
-        // Create JFrame
-        JFrame frame = new JFrame("Task Viewer and Groups Example");
-        frame.setLayout(new GridLayout(1, 4));
-
-        // Add components to JFrame
-        frame.add(controlPanel);
-        frame.add(taskGroup1);
-        frame.add(taskGroup2);
-        frame.add(taskViewer);
-
-        // Set frame properties
-        frame.setSize(800, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-         */
     }
 }

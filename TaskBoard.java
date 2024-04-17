@@ -105,4 +105,13 @@ public class TaskBoard {
     public ArrayList<User> getTeamMembers() {
         return teamMembers;
     }
+
+    /**
+     * getter method for name of taskboard
+     * 
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
 }
