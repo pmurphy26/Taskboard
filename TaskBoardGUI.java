@@ -175,6 +175,23 @@ public class TaskBoardGUI {
         }
     }
 
+    /**
+     * updates the task name of the given task in the task groups
+     * 
+     * @param changedTask
+     */
+    public void taskNameChanged(Task changedTask) {
+        for (int i = 0; i < taskPanel.getComponents().length; i++) {
+            if (taskPanel.getComponents()[i] instanceof TaskGroup) {
+                TaskGroup group = (TaskGroup) taskPanel.getComponents()[i];
+
+                if (group.contains(changedTask)) {
+                    group.getTaskGUI(changedTask).changeTaskName(changedTask.getTaskName());
+                }
+            }
+        }
+    }
+
     public void taskProgressChange(Task searchedTask) {
         for (int i = 0; i < taskPanel.getComponents().length; i++) {
             if (taskPanel.getComponents()[i] instanceof TaskGroup) {

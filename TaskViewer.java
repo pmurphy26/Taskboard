@@ -3,6 +3,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,7 +12,7 @@ import java.util.Set;
 
 public class TaskViewer extends JPanel {
     private Task task;
-    private JLabel titleLabel;
+    private JButton titleLabel;
     private Border titleBorder;
     private JPanel attributesPanel;
     private TaskBoardGUI taskboard;
@@ -28,11 +30,28 @@ public class TaskViewer extends JPanel {
      * Creates a new empty taskviewer object
      */
     public TaskViewer(TaskBoardGUI taskboard) {
+        task = null;
         this.taskboard = taskboard;
         setLayout(new BorderLayout());
 
         // Title panel with thicker black line border
-        titleLabel = new JLabel("No task selected yet");
+
+        
+        titleLabel = new JButton("No task selected yet");
+        titleLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Check for double-click event
+                if (e.getClickCount() == 2) {
+                    // Display prompt
+                    String newTaskName = JOptionPane.showInputDialog(TaskViewer.this,
+                    "Enter the new task name: ");
+                    changeTaskName(newTaskName);
+                }
+            }
+        });
+        titleLabel.setBackground(Color.WHITE);
+
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK); // Thicker black line border
@@ -187,7 +206,19 @@ public class TaskViewer extends JPanel {
         setLayout(new BorderLayout());
 
         // Title panel with thicker black line border
-        titleLabel = new JLabel(task.getTaskName());
+        titleLabel = new JButton(task.getTaskName());
+        titleLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Check for double-click event
+                if (e.getClickCount() == 2) {
+                    // Display prompt
+                    String newTaskName = JOptionPane.showInputDialog(TaskViewer.this,
+                    "Enter the new task name: ");
+                    changeTaskName(newTaskName);
+                }
+            }
+        });
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK); // Thicker black line border
@@ -255,8 +286,6 @@ public class TaskViewer extends JPanel {
                     selectedUsers.add(user);
                 }
 
-            
-
                 task.setAssignedMembers(selectedUsers);
                 getNewAttributes();
                 taskboard.tasksGroupChanged(task);
@@ -310,10 +339,22 @@ public class TaskViewer extends JPanel {
             blue = 255; 
         }
 
-        
-
         // Create light green color using RGB values
         Color returnColor = new Color(red, green, blue);
         return returnColor;
+    }
+
+    /**
+     * sets the selected task's name to the new name
+     * 
+     * @param newName
+     *      new name of the task
+     */
+    public void changeTaskName(String newName) {
+        if (task != null) {
+            task.setTaskName(newName);
+            titleLabel.setText(newName);
+            taskboard.taskNameChanged(task);
+        }
     }
 }

@@ -82,4 +82,13 @@ public class Task_GUI extends JPanel {
 
         return false;
     }
+
+    /**
+     * changes the task name to the new name
+     * 
+     * @param newName
+     */
+    public void  changeTaskName(String newName) {
+        taskButton.setText(newName);
+    }
 }

@@ -155,8 +155,14 @@ public class TaskGroup extends JPanel {
         return false;
     }
 
+    /**
+     * Finds the corresponding task gui panel for the searched task
+     * 
+     * @param searchedTask
+     *      task being searched for
+     * @return
+     */
     public Task_GUI getTaskGUI(Task searchedTask) {
-        // Find and remove the corresponding Task_GUI from the panel
         for (Task_GUI taskGUI : taskList) {
             if (taskGUI.getTask().equals(searchedTask)) {
                 return taskGUI;
