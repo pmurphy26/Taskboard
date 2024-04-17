@@ -56,6 +56,7 @@ public class HomepageGUI extends JFrame {
         
         TaskBoardGUI tbgui = new TaskBoardGUI(taskBoardName);
         taskboards.add(tbgui);
+        tbgui.addNewUser(user);
         
         Button taskBoardButton = new Button(tbgui.getTaskBoardName());
         taskBoardButton.addActionListener(new ActionListener() {
